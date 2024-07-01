@@ -4,7 +4,7 @@ Simple discord bot in python to get practice for a more in-depth discord bot.
 # Use
 I did not include a .env file that contains my bot's token but that can be easily set up:
 
-This is all that is in my .env as of this simple first workign version.
+This is all that is in my .env as of this simple first working version.
 
 `DISCORD_TOKEN=<your-bots-token-here>`
 
