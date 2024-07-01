@@ -1,25 +1,34 @@
 import discord
-from dotenv import load_dotenv
+import factparser as fp
 import os
+
+from discord.ext import commands
+from dotenv import load_dotenv
+
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
-GUILD = os.getenv("DISCORD_GUILD")
 intents = discord.Intents.default()
 intents.message_content = True
+filename = "facts.json"
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(intents=intents, command_prefix="!")
+sloth_facts = fp.load_sloth_facts(filename)
 
 
-@client.event
+@bot.event
 async def on_ready():
-    for guild in client.guilds:
+    for guild in bot.guilds:
         print(
-            f"{client.user} is connected to the following guild:\n"
+            f"{bot.user} is connected to the following guild:\n"
             f"{guild.name}(id: {guild.id})"
         )
-        members = "\n - ".join([member.name for member in guild.members])
-        print(f"Guild Members:\n - {members}")
 
 
-client.run(TOKEN)
+@bot.command(name="fact", help="Responds with a random sloth fact!")
+async def sloth_fact(ctx):
+    random_fact = fp.get_random_fact(sloth_facts)
+    await ctx.send(random_fact)
+
+
+bot.run(TOKEN)
